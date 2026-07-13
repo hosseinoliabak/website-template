@@ -28,7 +28,8 @@ Print this and keep it next to the computer.
 
 ## To publish (make it live on the internet)
 
-1. Click **Render** (top right in VSCode). Wait for it to finish.
+1. In the website folder, **double-click `render.bat`**. A black window opens,
+   builds the site, and says **Done**. Close it.
 2. Open **GitHub Desktop**.
    - Type a short note in the **Summary** box (example: "added week two").
    - Click **Commit to main**.
@@ -37,14 +38,18 @@ Print this and keep it next to the computer.
 
 ## Good to know
 
-- After you click Render, GitHub Desktop may show **many** changed files.
+- After you run `render.bat`, GitHub Desktop may show **many** changed files.
   That is normal. Just commit them all.
-- Always click **Render** before you push. If you forget, the website will
+- Always run `render.bat` before you push. If you forget, the website will
   not show your new changes.
 - Writing math: put it between dollar signs. Example: `$E = mc^2$`.
+- Pages can also draw charts with a little Python. See `example-with-a-plot`
+  in the `notes` folder for a pattern to copy.
 
 ## If something looks broken
 
 - Close and reopen VSCode.
-- Make sure you clicked **Render** before pushing.
+- Make sure you ran `render.bat` before pushing.
+- If a chart did not appear, run `render.bat` again. The first run after setup
+  sometimes needs a second try.
 - Call [your name] if still stuck.

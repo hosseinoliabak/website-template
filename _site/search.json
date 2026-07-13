@@ -1,0 +1,86 @@
+[
+  {
+    "objectID": "notes/index.html",
+    "href": "notes/index.html",
+    "title": "Notes",
+    "section": "",
+    "text": "Every note in this folder appears below automatically, newest first. To add a new one, copy first-note.qmd, give it a new file name, and change the title and words inside. It will show up here the next time the site is rendered.\n\n\n\n\n\n\n\n\n\nA Note With a Plot\n\n\nAn example note that runs a little Python to draw a chart. Copy this file when you want a page with a figure.\n\n\n\n\n\nJan 2, 2026\n\n1 min\n\n\n\n\n\n\nMy First Note\n\n\nAn example page showing headings, lists, math, and a callout. Copy this file to start a new note.\n\n\n\n\n\nJan 1, 2026\n\n1 min\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "notes/example-with-a-plot.html",
+    "href": "notes/example-with-a-plot.html",
+    "title": "A Note With a Plot",
+    "section": "",
+    "text": "This note is like the first example, but it also runs a small piece of Python to draw a chart. Copy this file when you want a page with a figure in it.\nFor the chart to appear, the private Python space must be installed. The setup-windows.ps1 script does that for you the first time."
+  },
+  {
+    "objectID": "notes/example-with-a-plot.html#a-simple-chart",
+    "href": "notes/example-with-a-plot.html#a-simple-chart",
+    "title": "A Note With a Plot",
+    "section": "A Simple Chart",
+    "text": "A Simple Chart\nThe code below draws a sine wave. Change the numbers and the words, then render the site to see it update.\n\n%config InlineBackend.figure_formats = ['svg']\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.linspace(0, 10, 200)\ny = np.sin(x)\n\nfig, ax = plt.subplots(figsize=(7, 4))\nax.plot(x, y, color=\"#22176F\", linewidth=2)\nax.set_title(\"A simple sine wave\", color=\"gray\")\nax.set_xlabel(\"x\")\nax.set_ylabel(\"sin(x)\")\nax.grid(linestyle=\"--\", alpha=0.4)\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\nThe line that begins with #| is a setting for the code block. Here #| echo: true means the reader can see the Python code above the chart. If you would rather show only the chart and hide the code, change it to #| echo: false.\n\n\n\n  Progress\n  \n    \n  \n  100% completed (12 of 12 min)"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "Welcome to my website. This is the home page.\nTo read my notes, click Notes in the menu at the top, or pick one below.\nEverything here is written in plain text files that end in .qmd. To change this page, open index.qmd and edit the words. To add a new note, see the Notes page."
+  },
+  {
+    "objectID": "index.html#recent-notes",
+    "href": "index.html#recent-notes",
+    "title": "Welcome",
+    "section": "Recent Notes",
+    "text": "Recent Notes\nThe list below fills in automatically from the notes/ folder.\n\n\n\n\n\nNotes\n\n\nAll notes and articles.\n\n\n\n\n\n\n\n\n\n\nA Note With a Plot\n\n\nAn example note that runs a little Python to draw a chart. Copy this file when you want a page with a figure.\n\n\n\n\n\nJan 2, 2026\n\n\n\n\n\n\n\nMy First Note\n\n\nAn example page showing headings, lists, math, and a callout. Copy this file to start a new note.\n\n\n\n\n\nJan 1, 2026\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Write a short paragraph about yourself here. Who you are, what you teach or research, and how people can reach you.\nTo edit this page, open about.qmd and change the words."
+  },
+  {
+    "objectID": "notes/first-note.html",
+    "href": "notes/first-note.html",
+    "title": "My First Note",
+    "section": "",
+    "text": "This is an example note. It shows the pieces you will use most often. Copy this file, rename it, and replace the words to write your own."
+  },
+  {
+    "objectID": "notes/first-note.html#a-heading",
+    "href": "notes/first-note.html#a-heading",
+    "title": "My First Note",
+    "section": "A Heading",
+    "text": "A Heading\nText is written as plain sentences, just like an email. Leave a blank line between paragraphs.\nYou can make words bold or italic, and you can link to another page or to an outside website."
+  },
+  {
+    "objectID": "notes/first-note.html#a-list",
+    "href": "notes/first-note.html#a-list",
+    "title": "My First Note",
+    "section": "A List",
+    "text": "A List\n\nFirst point\nSecond point\nThird point"
+  },
+  {
+    "objectID": "notes/first-note.html#math",
+    "href": "notes/first-note.html#math",
+    "title": "My First Note",
+    "section": "Math",
+    "text": "Math\nWrite math between dollar signs. Inline math looks like \\(E = mc^2\\) inside a sentence. A larger, centered formula uses two dollar signs:\n\\[\n\\int_{a}^{b} f(x)\\, dx = F(b) - F(a).\n\\]\nNo extra setup is needed. Math renders automatically."
+  },
+  {
+    "objectID": "notes/first-note.html#a-note-box",
+    "href": "notes/first-note.html#a-note-box",
+    "title": "My First Note",
+    "section": "A Note Box",
+    "text": "A Note Box\n\n\n\n\n\n\nNote\n\n\n\nUse a callout box like this to highlight a tip or an important remark."
+  },
+  {
+    "objectID": "notes/first-note.html#review-questions",
+    "href": "notes/first-note.html#review-questions",
+    "title": "My First Note",
+    "section": "Review Questions",
+    "text": "Review Questions\n1. How do you start a new note on this website?\n\n\n\n\n\n\nTipAnswer\n\n\n\n\n\nCopy this file, give it a new file name inside the notes/ folder, and change the title and text. It appears on the Notes page automatically after rendering.\n\n\n\n\n\n\n  Progress\n  \n    \n  \n  29% completed (5 of 17 min)"
+  }
+]

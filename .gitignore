@@ -18,6 +18,7 @@
 !*.html
 !*.ipynb
 !*.ps1
+!*.bat
 !*.md
 
 # Directories that should be tracked

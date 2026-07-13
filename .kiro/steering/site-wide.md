@@ -16,9 +16,9 @@ Cloudflare's side.
 
 The steps to publish a change are:
 
-1. Edit the `.qmd` file(s) in VSCode. Use `quarto preview` to watch changes live.
-2. Render the whole site with `quarto render` (or click **Render** in VSCode).
-   This rebuilds the `_site/` folder.
+1. Edit the `.qmd` file(s) in VSCode. Use **Preview** to watch changes live.
+2. Rebuild the `_site/` folder by double-clicking `render.bat` (it turns on the
+   `.venv` and runs `quarto render`).
 3. In GitHub Desktop, write a short summary, click **Commit to main**, then
    **Push origin**.
 4. Cloudflare Pages publishes the new `_site/` automatically within about a minute.
@@ -28,11 +28,15 @@ site will not show the change.
 
 ### Environment
 
-- Python is optional. A prose and math site renders with Quarto alone.
-- If a page runs Python (for a plot or table), the project uses a virtual
-  environment managed with `uv`.
-- Install packages with `uv pip install <package>` (never plain `pip`).
-- Install everything from the list with `uv pip install -r requirements.txt`.
+- Some pages run Python (for plots, tables, or small calculations), so the
+  project uses a virtual environment (`.venv`) managed with `uv`.
+- The packages are listed in `requirements.txt` and installed by
+  `setup-windows.ps1` the first time.
+- Install packages by hand with `uv pip install <package>` (never plain `pip`),
+  or all at once with `uv pip install -r requirements.txt`.
+- **Rendering must use that `.venv`.** The easy way is to double-click
+  `render.bat`, which turns on the `.venv` and then runs `quarto render`. From a
+  terminal the equivalent is `.venv\Scripts\activate` then `quarto render`.
 
 ## Adding and Removing Pages
 

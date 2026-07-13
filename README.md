@@ -1,7 +1,8 @@
 # Professor Website Template
 
 A stripped-down Quarto website that carries the look and structure of the
-source site, with placeholder content. Prose and math, no heavy toolchain.
+source site, with placeholder content. Supports prose, math, and pages that run
+Python for plots, without any heavy toolchain.
 
 ## What is in here
 
@@ -10,12 +11,13 @@ source site, with placeholder content. Prose and math, no heavy toolchain.
 | `_quarto.yml` | Site config: title, menu, theme, layout. **Edit the title, description, and site-url near the top.** |
 | `styles.css` | The full visual theme (colors, fonts). Copied verbatim from the source site. |
 | `index.qmd`, `about.qmd` | Home and About pages. |
-| `notes/` | Content pages. `index.qmd` auto-lists every note; `first-note.qmd` is a copyable example. |
+| `notes/` | Content pages. `index.qmd` auto-lists every note. `first-note.qmd` is a prose + math example; `example-with-a-plot.qmd` shows a page that runs Python to draw a chart. |
 | `theme-toggle.js`, `resume-reading.js`, `search-scope.js`, `review-numbering.js` | Client-side UX (dark/light toggle, resume reading, scoped search, review-question numbering). |
 | `_extensions/reading-time/` | Adds an estimated reading time to each page. Required by `_quarto.yml`. |
 | `.kiro/steering/` | Authoring conventions (also readable by an AI assistant). |
-| `setup-windows.ps1` | One-time installer. Right-click → Run with PowerShell. Installs Quarto + uv + the packages. The only thing he "runs." |
-| `requirements.txt` | Minimal Python packages (only needed if a page runs code). Installed by the script above. |
+| `setup-windows.ps1` | One-time installer. Right-click → Run with PowerShell. Installs Quarto + uv + the packages. |
+| `render.bat` | Double-click to rebuild the site. Turns on the `.venv` first so Python pages render. This is what he runs before publishing. |
+| `requirements.txt` | Python packages for pages that run code (jupyter, numpy, matplotlib, pandas). Installed by the setup script. |
 | `.gitignore` | Tracks source **and** the rendered `_site/` (Cloudflare serves `_site`). |
 | `CHEATSHEET.md` | One-page daily workflow to print for the professor. |
 
@@ -29,10 +31,17 @@ source site, with placeholder content. Prose and math, no heavy toolchain.
 4. Right-click `setup-windows.ps1` → **Run with PowerShell**. It installs
    Quarto, uv, and the packages. (This is the single "run" the professor does.)
 5. Edit `_quarto.yml`: set `title`, `description`, and `site-url`.
-6. Render once: `quarto render`.
+6. Render once by double-clicking `render.bat` (or `source .venv/bin/activate &&
+   quarto render` on your own machine). Confirm a Python page such as
+   `example-with-a-plot` renders its chart.
 7. Cloudflare Pages → connect the GitHub repo → **Framework preset: None**,
    **Build command: (empty)**, **Output directory: `_site`**. Deploy.
 8. Confirm the live URL loads, then do the first edit-render-push loop together.
+
+Note on Preview: for the live **Preview** button to run Python, VSCode must use
+the `.venv`. The included `.vscode/settings.json` points at it, but the first
+time you may need to pick it once with **Python: Select Interpreter** (choose the
+one under `.venv`). `render.bat` does not depend on this, it always uses `.venv`.
 
 ## Things dropped from the source site (add back only if wanted)
 

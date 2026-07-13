@@ -1,0 +1,17 @@
+[
+  {
+    "listing": "/notes/index.html",
+    "items": [
+      "/notes/example-with-a-plot.html",
+      "/notes/first-note.html"
+    ]
+  },
+  {
+    "listing": "/index.html",
+    "items": [
+      "/notes/index.html",
+      "/notes/example-with-a-plot.html",
+      "/notes/first-note.html"
+    ]
+  }
+]
