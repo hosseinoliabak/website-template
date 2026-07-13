@@ -29,7 +29,11 @@ if (Get-Command uv -ErrorAction SilentlyContinue) {
     uv pip install -r requirements.txt
     Write-Host ""
     Write-Host "All done. You can close this window." -ForegroundColor Green
-    Write-Host "Next: open this folder in VSCode and click Preview." -ForegroundColor Green
+    Write-Host ""
+    Write-Host "From now on, your day-to-day is:" -ForegroundColor Green
+    Write-Host "  1. Edit pages in VSCode (click Preview to watch live)." -ForegroundColor Green
+    Write-Host "  2. Double-click render.bat to rebuild the site." -ForegroundColor Green
+    Write-Host "  3. Publish with GitHub Desktop (Commit, then Push)." -ForegroundColor Green
 } else {
     Write-Host ""
     Write-Host "uv was installed but is not visible yet." -ForegroundColor Yellow
