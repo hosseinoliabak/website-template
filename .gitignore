@@ -1,0 +1,48 @@
+# Same approach as the source site: ignore everything, then re-include the
+# files we actually want tracked. The rendered _site/ IS tracked, because
+# Cloudflare Pages serves it directly.
+*
+!_site/
+!_site/**
+!.gitignore
+
+# Source files
+!*.qmd
+!*.yml
+!*.yaml
+!*.css
+!*.js
+!*.lua
+!*.xml
+!*.json
+!*.html
+!*.ipynb
+!*.ps1
+!*.md
+
+# Directories that should be tracked
+!notes/
+!notes/**
+!media/
+!media/**
+!_extensions/
+!_extensions/**
+!.kiro/
+!.kiro/**
+!.vscode/
+!.vscode/**
+
+# Root-level assets
+!theme-toggle.js
+!resume-reading.js
+!search-scope.js
+!review-numbering.js
+!styles.css
+!index.qmd
+!about.qmd
+!_quarto.yml
+
+# Quarto build cache and temp notebooks (never tracked)
+/.quarto/
+**/*.quarto_ipynb
+/.luarc.json

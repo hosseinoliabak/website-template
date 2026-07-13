@@ -1,0 +1,65 @@
+project:
+  type: website
+  output-dir: _site
+
+  # Only these become website pages. README.md and CHEATSHEET.md stay as
+  # repo docs and are not published.
+  render:
+    - "index.qmd"
+    - "about.qmd"
+    - "notes/*.qmd"
+
+  # Client-side scripts served as static files (dark/light toggle, resume-reading,
+  # scoped search, review-question renumbering). Same behaviour as the source site.
+  resources:
+    - theme-toggle.js
+    - resume-reading.js
+    - search-scope.js
+    - review-numbering.js
+
+website:
+  # ---- CHANGE THESE TWO LINES TO YOUR OWN ----
+  title: "Professor Lastname's Notes"
+  description: "Course notes and writing by Professor Lastname."
+  site-url: https://your-domain.pages.dev   # your Cloudflare Pages URL
+  # --------------------------------------------
+  open-graph: true
+  twitter-card: true
+  page-navigation: true
+  # To add a favicon later: put an .ico in media/ and uncomment the next line.
+  # favicon: media/favicon.ico
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: notes/index.qmd
+        text: Notes
+      - href: about.qmd
+        text: About
+    right: []
+
+# Adds an estimated reading time to each page.
+filters:
+  - reading-time
+
+format:
+  html:
+    theme: flatly
+    css: styles.css
+    include-before-body:
+      - text: '<script src="/theme-toggle.js"></script>'
+      - text: '<script src="/resume-reading.js"></script>'
+      - text: '<script src="/search-scope.js"></script>'
+      - text: '<script src="/review-numbering.js"></script>'
+    toc: true
+    code-fold: false
+    code-tools: false
+    code-copy: true
+    highlight-style: github
+    fig-format: png
+    # --- Grid Layout (controls page widths) ---
+    grid:
+      body-width: 1800px
+      sidebar-width: 400px
+      margin-width: 400px
+      gutter-width: 1.5em

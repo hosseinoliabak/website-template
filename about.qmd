@@ -1,0 +1,9 @@
+---
+title: "About"
+description: "About Professor Lastname."
+---
+
+Write a short paragraph about yourself here. Who you are, what you teach or
+research, and how people can reach you.
+
+To edit this page, open `about.qmd` and change the words.

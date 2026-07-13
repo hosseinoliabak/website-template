@@ -1,0 +1,50 @@
+# Professor Website Template
+
+A stripped-down Quarto website that carries the look and structure of the
+source site, with placeholder content. Prose and math, no heavy toolchain.
+
+## What is in here
+
+| File / folder | What it is |
+|---|---|
+| `_quarto.yml` | Site config: title, menu, theme, layout. **Edit the title, description, and site-url near the top.** |
+| `styles.css` | The full visual theme (colors, fonts). Copied verbatim from the source site. |
+| `index.qmd`, `about.qmd` | Home and About pages. |
+| `notes/` | Content pages. `index.qmd` auto-lists every note; `first-note.qmd` is a copyable example. |
+| `theme-toggle.js`, `resume-reading.js`, `search-scope.js`, `review-numbering.js` | Client-side UX (dark/light toggle, resume reading, scoped search, review-question numbering). |
+| `_extensions/reading-time/` | Adds an estimated reading time to each page. Required by `_quarto.yml`. |
+| `.kiro/steering/` | Authoring conventions (also readable by an AI assistant). |
+| `setup-windows.ps1` | One-time installer. Right-click → Run with PowerShell. Installs Quarto + uv + the packages. The only thing he "runs." |
+| `requirements.txt` | Minimal Python packages (only needed if a page runs code). Installed by the script above. |
+| `.gitignore` | Tracks source **and** the rendered `_site/` (Cloudflare serves `_site`). |
+| `CHEATSHEET.md` | One-page daily workflow to print for the professor. |
+
+## One-time setup (you do this)
+
+1. Push this folder to a new GitHub repo. On GitHub, Settings → check
+   **"Template repository"** so future sites start with "Use this template."
+2. On his machine: install **Quarto**, the VSCode **Quarto extension**, and
+   **GitHub Desktop**.
+3. Clone the repo to his machine with GitHub Desktop.
+4. Right-click `setup-windows.ps1` → **Run with PowerShell**. It installs
+   Quarto, uv, and the packages. (This is the single "run" the professor does.)
+5. Edit `_quarto.yml`: set `title`, `description`, and `site-url`.
+6. Render once: `quarto render`.
+7. Cloudflare Pages → connect the GitHub repo → **Framework preset: None**,
+   **Build command: (empty)**, **Output directory: `_site`**. Deploy.
+8. Confirm the live URL loads, then do the first edit-render-push loop together.
+
+## Things dropped from the source site (add back only if wanted)
+
+- **giscus comments** (needs a GitHub Discussions repo and IDs).
+- **QR margin header**, **yang.xml** syntax, and the course-listing/iconify
+  extensions (course-specific).
+- The full pinned `requirements.txt` with TensorFlow etc. (replaced with three
+  packages).
+
+## Note on Cloudflare and _site
+
+Because he renders locally and commits `_site/`, Cloudflare does not build
+anything, it just serves the folder. The one failure mode: if he forgets to run
+`quarto render` before pushing, the live site keeps the old content. Build that
+habit during the first practice loop.

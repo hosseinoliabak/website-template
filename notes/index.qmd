@@ -1,0 +1,14 @@
+---
+title: "Notes"
+description: "All notes and articles."
+listing:
+  contents: "*.qmd"
+  type: default
+  sort: "date desc"
+  categories: true
+  fields: [title, description, date, reading-time]
+---
+
+Every note in this folder appears below automatically, newest first. To add a
+new one, copy `first-note.qmd`, give it a new file name, and change the title
+and words inside. It will show up here the next time the site is rendered.

@@ -1,0 +1,10 @@
+{
+  "// note": "Comfortable defaults for editing prose. Adjust the font sizes to taste.",
+  "editor.fontSize": 18,
+  "editor.wordWrap": "on",
+  "editor.lineNumbers": "off",
+  "editor.minimap.enabled": false,
+  "workbench.startupEditor": "readme",
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000
+}

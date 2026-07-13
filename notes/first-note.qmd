@@ -1,0 +1,50 @@
+---
+title: "My First Note"
+description: "An example page showing headings, lists, math, and a callout. Copy this file to start a new note."
+date: "2026-01-01"
+categories: [example]
+---
+
+This is an example note. It shows the pieces you will use most often. Copy this
+file, rename it, and replace the words to write your own.
+
+## A Heading
+
+Text is written as plain sentences, just like an email. Leave a blank line
+between paragraphs.
+
+You can make words **bold** or *italic*, and you can link to
+[another page](../index.qmd) or to an [outside website](https://quarto.org).
+
+## A List
+
+- First point
+- Second point
+- Third point
+
+## Math
+
+Write math between dollar signs. Inline math looks like $E = mc^2$ inside a
+sentence. A larger, centered formula uses two dollar signs:
+
+$$
+\int_{a}^{b} f(x)\, dx = F(b) - F(a).
+$$
+
+No extra setup is needed. Math renders automatically.
+
+## A Note Box
+
+::: {.callout-note}
+Use a callout box like this to highlight a tip or an important remark.
+:::
+
+## Review Questions {.unnumbered}
+
+**1. How do you start a new note on this website?**
+
+::: {.callout-tip collapse="true"}
+## Answer
+Copy this file, give it a new file name inside the `notes/` folder, and change
+the title and text. It appears on the Notes page automatically after rendering.
+:::

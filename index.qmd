@@ -1,0 +1,26 @@
+---
+title: "Welcome"
+description: "Course notes and writing by Professor Lastname."
+listing:
+  - id: listing-home
+    contents: notes
+    type: default
+    sort: "date desc"
+    max-items: 5
+    fields: [title, description, date]
+---
+
+Welcome to my website. This is the home page.
+
+To read my notes, click **Notes** in the menu at the top, or pick one below.
+
+Everything here is written in plain text files that end in `.qmd`. To change
+this page, open `index.qmd` and edit the words. To add a new note, see the
+[Notes](notes/index.qmd) page.
+
+## Recent Notes
+
+The list below fills in automatically from the `notes/` folder.
+
+::: {#listing-home}
+:::

@@ -1,0 +1,6 @@
+{
+  "// note": "When he opens this folder, VSCode offers to install these.",
+  "recommendations": [
+    "quarto.quarto"
+  ]
+}
