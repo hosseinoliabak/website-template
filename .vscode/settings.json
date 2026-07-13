@@ -8,7 +8,8 @@
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 1000,
 
-  "// python": "Use the .venv created by setup-windows.ps1 so Preview can run plots.",
+  "// python": "Use the .venv created by the setup script so Preview can run plots.",
+  "// python-note": "This path is for Windows. On Linux/macOS change it to ${workspaceFolder}/.venv/bin/python (or pick it once via 'Python: Select Interpreter').",
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
   "python.terminal.activateEnvironment": true
 }

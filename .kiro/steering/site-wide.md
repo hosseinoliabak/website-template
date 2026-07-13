@@ -17,8 +17,9 @@ Cloudflare's side.
 The steps to publish a change are:
 
 1. Edit the `.qmd` file(s) in VSCode. Use **Preview** to watch changes live.
-2. Rebuild the `_site/` folder by double-clicking `render.bat` (it turns on the
-   `.venv` and runs `quarto render`).
+2. Rebuild the `_site/` folder with the render script (`render.bat` on Windows,
+   `bash render.sh` on Linux or macOS). It turns on the `.venv` and runs
+   `quarto render`.
 3. In GitHub Desktop, write a short summary, click **Commit to main**, then
    **Push origin**.
 4. Cloudflare Pages publishes the new `_site/` automatically within about a minute.
@@ -34,9 +35,11 @@ site will not show the change.
   `setup-windows.ps1` the first time.
 - Install packages by hand with `uv pip install <package>` (never plain `pip`),
   or all at once with `uv pip install -r requirements.txt`.
-- **Rendering must use that `.venv`.** The easy way is to double-click
-  `render.bat`, which turns on the `.venv` and then runs `quarto render`. From a
-  terminal the equivalent is `.venv\Scripts\activate` then `quarto render`.
+- **Rendering must use that `.venv`.** On Windows, double-click `render.bat`.
+  On Linux or macOS, run `bash render.sh`. Both turn on the `.venv` and then
+  run `quarto render`. From a terminal the equivalent is activating the venv
+  (`.venv\Scripts\activate` on Windows, `source .venv/bin/activate` elsewhere)
+  and then `quarto render`.
 
 ## Adding and Removing Pages
 

@@ -45,6 +45,9 @@ Print this and keep it next to the computer.
 - Writing math: put it between dollar signs. Example: `$E = mc^2$`.
 - Pages can also draw charts with a little Python. See `example-with-a-plot`
   in the `notes` folder for a pattern to copy.
+- This sheet assumes a Windows computer. On a Mac or Linux computer, the
+  setup script is `setup-mac.sh` or `setup-linux.sh`, and you rebuild with
+  `bash render.sh` in a terminal instead of `render.bat`.
 
 ## If something looks broken
 

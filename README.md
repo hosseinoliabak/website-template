@@ -15,8 +15,10 @@ Python for plots, without any heavy toolchain.
 | `theme-toggle.js`, `resume-reading.js`, `search-scope.js`, `review-numbering.js` | Client-side UX (dark/light toggle, resume reading, scoped search, review-question numbering). |
 | `_extensions/reading-time/` | Adds an estimated reading time to each page. Required by `_quarto.yml`. |
 | `.kiro/steering/` | Authoring conventions (also readable by an AI assistant). |
-| `setup-windows.ps1` | One-time installer. Right-click → Run with PowerShell. Installs Quarto + uv + the packages. |
-| `render.bat` | Double-click to rebuild the site. Turns on the `.venv` first so Python pages render. This is what he runs before publishing. |
+| `setup-windows.ps1` | One-time installer for Windows. Right-click → Run with PowerShell. Installs Quarto + uv + the packages. |
+| `setup-linux.sh`, `setup-mac.sh` | The same one-time installer for Linux (Ubuntu/Debian) and macOS. Run with `bash setup-linux.sh` / `bash setup-mac.sh`. |
+| `render.bat` | Windows: double-click to rebuild the site. Turns on the `.venv` first so Python pages render. Run before publishing. |
+| `render.sh` | Linux/macOS: `bash render.sh` does the same. |
 | `requirements.txt` | Python packages for pages that run code (jupyter, numpy, matplotlib, pandas). Installed by the setup script. |
 | `.gitignore` | Tracks source **and** the rendered `_site/` (Cloudflare serves `_site`). |
 | `CHEATSHEET.md` | One-page daily workflow to print for the professor. |
@@ -28,8 +30,10 @@ Python for plots, without any heavy toolchain.
 2. On his machine: install **Quarto**, the VSCode **Quarto extension**, and
    **GitHub Desktop**.
 3. Clone the repo to his machine with GitHub Desktop.
-4. Right-click `setup-windows.ps1` → **Run with PowerShell**. It installs
-   Quarto, uv, and the packages. (This is the single "run" the professor does.)
+4. Run the setup script for his machine, once. Windows: right-click
+   `setup-windows.ps1` → **Run with PowerShell**. Linux: `bash setup-linux.sh`.
+   macOS: `bash setup-mac.sh`. It installs Quarto, uv, and the packages.
+   (This is the single "run" the professor does.)
 5. Edit `_quarto.yml`: set `title`, `description`, and `site-url`.
 6. Render once by double-clicking `render.bat` (or `source .venv/bin/activate &&
    quarto render` on your own machine). Confirm a Python page such as
