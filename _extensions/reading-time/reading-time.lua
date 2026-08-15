@@ -93,7 +93,7 @@ local function find_source_file(basename)
   local search_paths = {
     -- Quarto runs the filter from the source file's own directory, so the
     -- cwd-relative name is the reliable hit. The notes/ entry covers the case
-    -- where a page is rendered from the project root instead.
+    -- of a page rendered from the project root instead.
     basename .. ".qmd",
     "notes/" .. basename .. ".qmd",
   }
