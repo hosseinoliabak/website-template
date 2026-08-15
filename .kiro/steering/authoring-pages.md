@@ -17,6 +17,7 @@ title: "The Page Title"
 description: "One plain sentence about what the page covers."
 date: "YYYY-MM-DD"
 categories: [topic-tag]
+difficulty: 2
 ---
 ```
 
@@ -24,6 +25,16 @@ categories: [topic-tag]
 - `description` is required (used for search engines and the Notes list).
 - `date` controls the order on the Notes page (newest first). Use today's date.
 - `categories` is optional. It groups related notes with clickable tags.
+- `difficulty` is optional, from 1 to 5. It draws the filled circles under the
+  title and scales the estimated reading time (0.85, 1.0, 1.2, 1.5, 2.0), so a
+  dense page is not sold as a quick read. Rate 1 for light reading, 3 for
+  standard technical content, and 5 for material that needs pen and paper.
+- `show-reading-time: false` hides the estimate on a page where it makes no
+  sense, such as a landing page.
+
+The estimate itself comes from the prose, the figures, the mathematics, and the
+code, each billed separately. Change a page's `difficulty` rather than padding
+the words when the number looks wrong.
 
 ## Structure
 

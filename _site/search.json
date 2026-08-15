@@ -18,7 +18,7 @@
     "href": "notes/example-with-a-plot.html#a-simple-chart",
     "title": "A Note With a Plot",
     "section": "A Simple Chart",
-    "text": "A Simple Chart\nThe code below draws a sine wave. Change the numbers and the words, then render the site to see it update.\n\n%config InlineBackend.figure_formats = ['svg']\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.linspace(0, 10, 200)\ny = np.sin(x)\n\nfig, ax = plt.subplots(figsize=(7, 4))\nax.plot(x, y, color=\"#22176F\", linewidth=2)\nax.set_title(\"A simple sine wave\", color=\"gray\")\nax.set_xlabel(\"x\")\nax.set_ylabel(\"sin(x)\")\nax.grid(linestyle=\"--\", alpha=0.4)\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\nThe line that begins with #| is a setting for the code block. Here #| echo: true means the reader can see the Python code above the chart. If you would rather show only the chart and hide the code, change it to #| echo: false.\n\n\n\n  Progress\n  \n    \n  \n  100% completed (12 of 12 min)"
+    "text": "A Simple Chart\nThe code below draws a sine wave. Change the numbers and the words, then render the site to see it update.\n\n%config InlineBackend.figure_formats = ['svg']\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nx = np.linspace(0, 10, 200)\ny = np.sin(x)\n\nfig, ax = plt.subplots(figsize=(7, 4))\nax.plot(x, y, color=\"#22176F\", linewidth=2)\nax.set_title(\"A simple sine wave\", color=\"gray\")\nax.set_xlabel(\"x\")\nax.set_ylabel(\"sin(x)\")\nax.grid(linestyle=\"--\", alpha=0.4)\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\nThe line that begins with #| is a setting for the code block. Here #| echo: true means the reader can see the Python code above the chart. If you would rather show only the chart and hide the code, change it to #| echo: false.\n\n\n\n  Progress\n  \n    \n  \n  63% completed (7 of 11 min)"
   },
   {
     "objectID": "index.html",
@@ -81,6 +81,6 @@
     "href": "notes/first-note.html#review-questions",
     "title": "My First Note",
     "section": "Review Questions",
-    "text": "Review Questions\n1. How do you start a new note on this website?\n\n\n\n\n\n\nTipAnswer\n\n\n\n\n\nCopy this file, give it a new file name inside the notes/ folder, and change the title and text. It appears on the Notes page automatically after rendering.\n\n\n\n\n\n\n  Progress\n  \n    \n  \n  29% completed (5 of 17 min)"
+    "text": "Review Questions\n1. How do you start a new note on this website?\n\n\n\n\n\n\nTipAnswer\n\n\n\n\n\nCopy this file, give it a new file name inside the notes/ folder, and change the title and text. It appears on the Notes page automatically after rendering.\n\n\n\n\n\n\n  Progress\n  \n    \n  \n  100% completed (11 of 11 min)"
   }
 ]

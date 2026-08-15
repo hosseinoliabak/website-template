@@ -10,6 +10,14 @@
 #   or run code work correctly. Do this before you publish.
 #
 #   (On Windows, double-click render.bat instead.)
+#
+#   Why it sometimes builds twice: every page writes its own
+#   reading time into .quarto/_reading-times.json while the
+#   Notes page reads that same file to total them up. A page
+#   whose time just changed therefore leaves the Notes page one
+#   build behind. This script notices when the numbers moved
+#   and builds a second time to settle them. Most runs change
+#   nothing and finish after the first pass.
 # ============================================================
 set -e
 cd "$(dirname "$0")"
@@ -21,7 +29,19 @@ if [ ! -d ".venv" ]; then
 fi
 
 source .venv/bin/activate
+
+RT=".quarto/_reading-times.json"
+BEFORE="$(mktemp)"
+trap 'rm -f "$BEFORE"' EXIT
+if [ -f "$RT" ]; then cp "$RT" "$BEFORE"; else : > "$BEFORE"; fi
+
 quarto render
+
+if ! cmp -s "$BEFORE" "$RT"; then
+    echo ""
+    echo "Reading times changed. Building once more so the totals catch up..."
+    quarto render
+fi
 
 echo ""
 echo "Done. You can close this window."

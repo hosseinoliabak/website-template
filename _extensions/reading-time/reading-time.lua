@@ -7,6 +7,34 @@
 
 local WPM = 150
 
+-- Group an integer with thousands separators: 5300 -> "5,300"
+local function commafy(n)
+  local s = tostring(n)
+  local out = s:reverse():gsub("(%d%d%d)", "%1,"):reverse()
+  return (out:gsub("^,", ""))
+end
+
+-- JS that stamps the weekday onto the Published date and, when an order is
+-- given, sets the Published cell's grid order. Shared by index and content pages.
+local function published_js(order)
+  local order_line = order and ('if (pw) pw.style.order = "' .. order .. '";') or ""
+  return [[
+    var dateEl = meta.querySelector(".date");
+    if (dateEl) {
+      var pw = dateEl.parentNode && dateEl.parentNode.parentNode;
+      ]] .. order_line .. [[
+      if (!dateEl.dataset.weekdayified) {
+        var d = new Date(dateEl.textContent.trim());
+        if (!isNaN(d.getTime())) {
+          var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+          dateEl.textContent = days[d.getDay()] + ", " + dateEl.textContent.trim();
+        }
+        dateEl.dataset.weekdayified = "1";
+      }
+    }
+]]
+end
+
 -- Difficulty multipliers: how much longer dense content takes to absorb
 local DIFFICULTY_MULTIPLIERS = {
   [1] = 0.85,
@@ -63,14 +91,11 @@ end
 
 local function find_source_file(basename)
   local search_paths = {
-    "math/calculus/" .. basename .. ".qmd",
-    "math/linear-algebra/" .. basename .. ".qmd",
-    "math/probability-statistics/" .. basename .. ".qmd",
-    "networking/ccde-written/" .. basename .. ".qmd",
-    "ai/agentic/" .. basename .. ".qmd",
-    "ai/deep-learning/" .. basename .. ".qmd",
-    "ai/machine-learning/" .. basename .. ".qmd",
+    -- Quarto runs the filter from the source file's own directory, so the
+    -- cwd-relative name is the reliable hit. The notes/ entry covers the case
+    -- where a page is rendered from the project root instead.
     basename .. ".qmd",
+    "notes/" .. basename .. ".qmd",
   }
   for _, path in ipairs(search_paths) do
     local f = io.open(path, "r")
@@ -83,6 +108,59 @@ local function find_source_file(basename)
   return nil
 end
 
+-- A code block the reader has to work through. Two fence styles count:
+-- executable cells (```{python}), and display-only blocks (```python) that the
+-- reader copies into their own notebook, such as labs that need an environment
+-- the site cannot render. Both cost the same to follow, so both are billed.
+local function opens_code_block(line)
+  return line:match("^```{python}") ~= nil
+      or line:match("^```{r}") ~= nil
+      or line:match("^```python%s*$") ~= nil
+      or line:match("^```py%s*$") ~= nil
+      or line:match("^```r%s*$") ~= nil
+end
+
+-- Figures the reader stops and studies, in any format. Inline SVG markup counts,
+-- and so does a raster or vector image (png, gif, jpg, svg) given as a Markdown
+-- image or an <img> tag that stands on its own line. An image embedded mid-line
+-- is not a figure. It is an icon inside a sentence or a thumbnail inside a table
+-- cell, already paid for by the surrounding text, so it is not billed again.
+local function count_figures(content)
+  local n = 0
+  for _ in content:gmatch("<svg") do n = n + 1 end
+  for line in content:gmatch("[^\n]+") do
+    if line:match("^!%[") or line:match("^<img") then n = n + 1 end
+  end
+  return n
+end
+
+-- Figures a code cell PRODUCED. These never appear in the .qmd source, so the
+-- scan above cannot see them, yet a generated matplotlib figure costs the
+-- reader exactly what a hand-drawn one does. They arrive in the AST as Images
+-- inside a .cell-output-display div, and keying on that div is what keeps a
+-- 52px thumbnail sitting in a table cell from being billed as a figure.
+local function count_generated_figures(doc)
+  local n = 0
+  local counter = { Image = function(el) n = n + 1; return nil end }
+  local function scan(blocks)
+    for _, b in ipairs(blocks) do
+      if b.t == "Div" then
+        local is_display = false
+        for _, c in ipairs(b.classes) do
+          if c == "cell-output-display" then is_display = true end
+        end
+        if is_display then
+          pandoc.walk_block(b, counter)
+        else
+          scan(b.content)
+        end
+      end
+    end
+  end
+  scan(doc.blocks)
+  return n
+end
+
 local function count_extras_from_source(basename)
   local content = find_source_file(basename)
   if not content then return 0, 0, 0, 0 end
@@ -90,23 +168,55 @@ local function count_extras_from_source(basename)
   local questions = 0
   for _ in content:gmatch("{%.callout%-tip") do questions = questions + 1 end
 
-  local figures = 0
-  for _ in content:gmatch("<svg") do figures = figures + 1 end
+  local figures = count_figures(content)
 
-  local code_lines = 0
+  -- Bill code by what the reader actually does with each line. Logic has to be
+  -- decoded one line at a time, comments and docstrings are skimmed, and a #|
+  -- cell option is configuration rather than reading material. Billing every
+  -- visible line at one flat rate made a 20-line course docstring cost as much
+  -- as 20 lines of nested loops, which put code at ~80% of a lab's estimate.
+  local logic_lines, comment_lines, doc_lines = 0, 0, 0
   local in_code = false
   local is_hidden = false
+  local in_collapsed = false  -- code inside collapse="true" callouts is opt-in; do not bill it
+  local in_doc = false        -- inside a multi-line docstring
+  local delim = nil           -- which quote style opened it
   for line in content:gmatch("[^\n]+") do
-    if line:match("^```{python}") or line:match("^```{r}") then
-      in_code = true; is_hidden = false
+    if not in_code and line:match('^:::.*collapse="true"') then
+      in_collapsed = true
+    elseif not in_code and in_collapsed and line:match("^:::%s*$") then
+      in_collapsed = false
+    end
+    if opens_code_block(line) then
+      -- Reset the docstring flag at every fence, so a stray triple quote (for
+      -- example f'''(x) inside an f-string) can never leak past its own block.
+      in_code = true; is_hidden = false; in_doc = false; delim = nil
     elseif line:match("^```") and in_code then
-      in_code = false; is_hidden = false
+      in_code = false; is_hidden = false; in_doc = false
     elseif in_code then
       if line:match("#|%s*echo:%s*false") then is_hidden = true
-      elseif not is_hidden then code_lines = code_lines + 1 end
+      elseif not is_hidden and not in_collapsed then
+        local s = line:match("^%s*(.-)%s*$")
+        if s == "" then                                  -- whitespace only, a blank line
+        elseif in_doc then
+          doc_lines = doc_lines + 1
+          if s:sub(-3) == delim then in_doc = false end
+        elseif s:sub(1, 3) == '"""' or s:sub(1, 3) == "'''" then
+          -- Only a line STARTING with the delimiter opens a docstring.
+          delim = s:sub(1, 3)
+          doc_lines = doc_lines + 1
+          if not (#s > 6 and s:sub(-3) == delim) then in_doc = true end
+        elseif s:sub(1, 2) == "#|" then                  -- cell option, not prose
+        elseif s:sub(1, 1) == "#" then
+          comment_lines = comment_lines + 1
+        else
+          logic_lines = logic_lines + 1
+        end
+      end
     end
   end
-  local code_minutes = math.ceil(code_lines / 4) * 2
+  -- 15 seconds per line of logic, 5 seconds per line of comment or docstring
+  local code_minutes = math.ceil(logic_lines / 4 + (comment_lines + doc_lines) / 12)
 
   local math_blocks = 0
   for _ in content:gmatch("%$%$[^$]+%$%$") do math_blocks = math_blocks + 1 end
@@ -300,6 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var div = document.createElement("div");
     div.innerHTML = '<div class="quarto-title-meta-heading">Total Reading Time</div><div class="quarto-title-meta-contents"><p>]] .. time_label .. [[</p></div>';
     meta.appendChild(div);
+]] .. published_js(nil) .. [[
   }
 });
 </script>
@@ -310,8 +421,12 @@ document.addEventListener("DOMContentLoaded", function () {
   end
 
   -- Non-index pages: compute reading time from Pandoc AST
-  local word_minutes = math.ceil(count_words(doc.blocks) / WPM)
+  local words = count_words(doc.blocks)
+  local word_minutes = math.ceil(words / WPM)
   local questions, figures, code_minutes, other_minutes = count_extras_from_source(basename)
+  -- One minute per figure, whether it was written into the source or produced
+  -- by a code cell. The source scan cannot see generated figures, so add them.
+  figures = figures + count_generated_figures(doc)
 
   local extra = 0
   if doc.meta["extra-reading-time"] then
@@ -351,12 +466,25 @@ document.addEventListener("DOMContentLoaded", function () {
     end
     difficulty_html = [[
     var diffDiv = document.createElement("div");
+    diffDiv.style.order = "4";
     diffDiv.innerHTML = '<div class="quarto-title-meta-heading">Difficulty</div><div class="quarto-title-meta-contents"><p>]] .. dots .. [[</p></div>';
     meta.appendChild(diffDiv);
 ]]
   end
 
-  -- Inject reading time and difficulty into title meta
+  -- Word-count label for the Length cell (rounded to the nearest 100 once past 1k)
+  local display_words = words
+  if words >= 1000 then display_words = math.floor((words + 50) / 100) * 100 end
+  local words_label = "~" .. commafy(display_words) .. " words"
+  local length_html = [[
+    var lenDiv = document.createElement("div");
+    lenDiv.style.order = "1";
+    lenDiv.innerHTML = '<div class="quarto-title-meta-heading">Length</div><div class="quarto-title-meta-contents"><p>]] .. words_label .. [[</p></div>';
+    meta.appendChild(lenDiv);
+]]
+
+  -- Inject reading time, length, difficulty and the weekday-stamped date.
+  -- Grid order: Length (1) · Published (2) · Reading Time (3) · Difficulty (4).
   local label = "~" .. minutes .. " min read"
   local tooltip = "Estimated based on " .. WPM .. " words/min reading speed, code complexity, math blocks, and interactive tools. Adjusted by difficulty level."
   local script = pandoc.RawBlock("html", [[
@@ -365,9 +493,10 @@ document.addEventListener("DOMContentLoaded", function () {
   var meta = document.querySelector(".quarto-title-meta");
   if (meta) {
     var div = document.createElement("div");
+    div.style.order = "3";
     div.innerHTML = '<div class="quarto-title-meta-heading">Reading Time</div><div class="quarto-title-meta-contents"><p>]] .. label .. [[ <span class="rt-info" style="cursor:help;opacity:0.6;font-size:0.85em;position:relative;">ⓘ<span class="rt-tooltip">]] .. tooltip .. [[</span></span></p></div>';
     meta.appendChild(div);
-]] .. difficulty_html .. [[
+]] .. length_html .. difficulty_html .. published_js("2") .. [[
   }
 });
 </script>

@@ -40,6 +40,15 @@ Print this and keep it next to the computer.
 
 - After you run `render.bat`, GitHub Desktop may show **many** changed files.
   That is normal. Just commit them all.
+- The black window may build the site **twice**. That is normal too. It happens
+  when a page's reading time changed and the Notes page has to catch up.
+- The two round buttons at the bottom right of every page belong to your
+  readers. The paint palette changes the colors, and **Aa** changes the
+  typeface. Each reader keeps their own choice, and printing always comes out
+  in Garamond on white.
+- Each note shows an estimated reading time. To mark one as heavier or lighter
+  than its length suggests, add a line such as `difficulty: 4` to the front
+  matter at the top (1 is light, 5 is very hard).
 - Always run `render.bat` before you push. If you forget, the website will
   not show your new changes.
 - Writing math: put it between dollar signs. Example: `$E = mc^2$`.

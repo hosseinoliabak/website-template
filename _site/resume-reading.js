@@ -17,7 +17,10 @@
   function getPageTitle() {
     var titleEl = document.querySelector('h1.title, .quarto-title h1, h1');
     if (titleEl) return titleEl.textContent.trim();
-    return document.title.replace(" - Hossein's Notes", '').trim();
+    // Fallback for a page with no heading. Quarto writes the browser title as
+    // "Page Title - Site Title", so drop the last dashed segment rather than
+    // naming any one site here.
+    return document.title.replace(/\s+[-–]\s+[^-–]*$/, '').trim();
   }
 
   // Get scroll percentage

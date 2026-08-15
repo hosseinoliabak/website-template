@@ -3,6 +3,7 @@ title: "My First Note"
 description: "An example page showing headings, lists, math, and a callout. Copy this file to start a new note."
 date: "2026-01-01"
 categories: [example]
+difficulty: 2
 ---
 
 This is an example note. It shows the pieces you will use most often. Copy this

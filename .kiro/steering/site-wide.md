@@ -19,7 +19,10 @@ The steps to publish a change are:
 1. Edit the `.qmd` file(s) in VSCode. Use **Preview** to watch changes live.
 2. Rebuild the `_site/` folder with the render script (`render.bat` on Windows,
    `bash render.sh` on Linux or macOS). It turns on the `.venv` and runs
-   `quarto render`.
+   `quarto render`. Each page writes its own reading time into
+   `.quarto/_reading-times.json`, and the Notes page reads that file to total
+   them, so the script builds a second time whenever those numbers moved. Most
+   runs finish after one pass.
 3. In GitHub Desktop, write a short summary, click **Commit to main**, then
    **Push origin**.
 4. Cloudflare Pages publishes the new `_site/` automatically within about a minute.
@@ -84,7 +87,29 @@ technical requirements.
 - Section headings (`##` and `###`) do not start with an article (the, a, an).
 - When adding new CSS, append it to the global `styles.css` rather than making
   per-page styles, unless the style is truly specific to one page.
-- The site uses the Flatly Bootstrap theme with a custom `styles.css`.
+
+## Themes and Colors
+
+The site loads the Flatly Bootstrap theme and then overrides it in
+`styles.css`. Four color themes and three font themes ship with it, cycled by
+the two round buttons in the bottom-right corner (`theme-toggle.js`). A theme
+is a CSS class on `<html>`, and the default theme is the absence of a class.
+
+- Never hardcode an accent color on a button, badge, focus ring, or any other
+  control. Use the tokens that every theme redefines near the top of
+  `styles.css`.
+  - `var(--site-accent)` for an accent fill, border, or text color.
+  - `var(--site-accent-contrast)` for text sitting on an accent fill. Do not
+    write `color: #fff` next to an accent background, because the midnight
+    theme needs near-black text there.
+  - `var(--site-accent-hover)`, `var(--site-accent-soft)`,
+    `var(--site-accent-ring)`, and `var(--site-accent-muted)` for hover
+    states, tinted fills, focus rings, and faint states.
+- Colors that carry meaning rather than branding stay hardcoded. Plot palettes
+  and red or green status colors do not use the accent tokens.
+- Font families are never named outside the token block. `--site-font-body`,
+  `--site-font-heading`, `--site-font-size`, and `--site-line-height` are what
+  the font themes swap.
 
 ## Git Safety
 

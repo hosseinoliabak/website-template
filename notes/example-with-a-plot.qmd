@@ -3,6 +3,7 @@ title: "A Note With a Plot"
 description: "An example note that runs a little Python to draw a chart. Copy this file when you want a page with a figure."
 date: "2026-01-02"
 categories: [example]
+difficulty: 2
 ---
 
 This note is like the first example, but it also **runs a small piece of Python**

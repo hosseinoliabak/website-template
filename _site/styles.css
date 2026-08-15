@@ -8,24 +8,83 @@
   --bs-primary-rgb: 34, 23, 111;
   --bs-link-color: #22176F;
   --bs-link-hover-color: #160f4a;
+
+  /* Accent tokens — every page-level button and control reads these
+     instead of hardcoding a color, so all three themes stay in sync.
+     --site-accent-contrast is the text color that stays readable on
+     top of --site-accent (white here, near-black on midnight). */
+  --site-accent: #22176F;
+  --site-accent-rgb: 34, 23, 111;
+  --site-accent-hover: #160f4a;
+  --site-accent-contrast: #ffffff;
+  --site-accent-soft: rgba(34, 23, 111, 0.07);
+  --site-accent-ring: rgba(34, 23, 111, 0.22);
+  --site-accent-muted: rgba(34, 23, 111, 0.45);
+
+  /* Panel surface for interactive tool widgets, so a tool never
+     stays a white box on a dark page. */
+  --site-surface: #fafafa;
+  --site-surface-border: #dddddd;
+
+  /* Font theme tokens. The Aa button swaps the two families and the
+     two scale knobs; nothing else in the stylesheet names a family. */
+  --site-font-body: "PT Sans", sans-serif;
+  --site-font-heading: "Nunito", sans-serif;
+  --site-font-size: 1.05rem;
+  --site-line-height: 1.7;
+
+  --bs-body-font-family: var(--site-font-body);
 }
 
 /* --- Google Fonts --- */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=PT+Sans:wght@400;700&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=PT+Sans:wght@400;700&family=Inter:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;0,7..72,700;1,7..72,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+/* --- Font themes ---
+   reader:   Literata body over Inter headings, a screen-tuned serif
+             with tall x-height for long reading sessions.
+   garamond: EB Garamond throughout, the print-oriented theme. Garamond
+             sets small, so the scale knobs compensate. */
+html.font-reader {
+  --site-font-body: "Literata", Georgia, serif;
+  --site-font-heading: "Inter", sans-serif;
+  --site-font-size: 1.02rem;
+  --site-line-height: 1.75;
+}
+
+html.font-garamond {
+  --site-font-body: "EB Garamond", "Garamond", Georgia, serif;
+  --site-font-heading: "EB Garamond", "Garamond", Georgia, serif;
+  --site-font-size: 1.2rem;
+  --site-line-height: 1.65;
+}
 
 /* --- Body & Typography --- */
 body {
-  font-family: "PT Sans", sans-serif;
-  font-size: 1.05rem;
+  font-family: var(--site-font-body);
+  font-size: var(--site-font-size);
   color: #2c2c2c;
   background-color: #ffffff;
-  line-height: 1.7;
+  line-height: var(--site-line-height);
 }
 
 h1, h2, h3, h4 {
   color: #22176F;
   font-weight: 600;
-  font-family: "Nunito", sans-serif;
+  font-family: var(--site-font-heading);
+}
+
+/* Quarto chrome reads Bootstrap's own family var in a few places */
+.navbar, .sidebar, .quarto-title-block, .toc-actions, #quarto-margin-sidebar {
+  font-family: var(--site-font-body);
+}
+
+/* Garamond headings need a touch more weight to hold their own */
+html.font-garamond h1,
+html.font-garamond h2,
+html.font-garamond h3,
+html.font-garamond h4 {
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 h2 {
@@ -127,14 +186,24 @@ a.sidebar-link.active {
 }
 
 /* --- Buttons --- */
+/* Native form controls follow the theme instead of the browser blue */
+input[type="range"],
+input[type="checkbox"],
+input[type="radio"],
+progress {
+  accent-color: var(--site-accent);
+}
+
 .btn-primary {
-  background-color: #22176F !important;
-  border-color: #22176F !important;
+  background-color: var(--site-accent) !important;
+  border-color: var(--site-accent) !important;
+  color: var(--site-accent-contrast) !important;
 }
 
 .btn-primary:hover {
-  background-color: #160f4a !important;
-  border-color: #160f4a !important;
+  background-color: var(--site-accent-hover) !important;
+  border-color: var(--site-accent-hover) !important;
+  color: var(--site-accent-contrast) !important;
 }
 
 /* --- TOC (Right Sidebar) --- */
@@ -327,6 +396,17 @@ thead {
   --bs-primary-rgb: 184, 98, 11;
   --bs-link-color: #B8620B;
   --bs-link-hover-color: #8B4513;
+
+  --site-accent: #B8620B;
+  --site-accent-rgb: 184, 98, 11;
+  --site-accent-hover: #8B4513;
+  --site-accent-contrast: #ffffff;
+  --site-accent-soft: rgba(184, 98, 11, 0.09);
+  --site-accent-ring: rgba(184, 98, 11, 0.26);
+  --site-accent-muted: rgba(184, 98, 11, 0.45);
+
+  --site-surface: #FFF6EA;
+  --site-surface-border: #E8D5C0;
 }
 
 .theme-warm body {
@@ -406,16 +486,6 @@ thead {
   color: #8B4513 !important;
   font-weight: 600;
   border-left: 3px solid #B8620B;
-}
-
-.theme-warm .btn-primary {
-  background-color: #B8620B !important;
-  border-color: #B8620B !important;
-}
-
-.theme-warm .btn-primary:hover {
-  background-color: #8B4513 !important;
-  border-color: #8B4513 !important;
 }
 
 .theme-warm pre {
@@ -525,6 +595,195 @@ thead {
 
 
 /* ============================================
+   FLATLY THEME (slate navbar, teal accents)
+   Reproduces the stock Bootswatch flatly palette:
+   dark slate chrome, teal links, near-black text.
+   ============================================ */
+.theme-flatly {
+  --bs-primary: #2C3E50;
+  --bs-primary-rgb: 44, 62, 80;
+  --bs-link-color: #18BC9C;
+  --bs-link-hover-color: #128F76;
+
+  --site-accent: #18BC9C;
+  --site-accent-rgb: 24, 188, 156;
+  --site-accent-hover: #128F76;
+  --site-accent-contrast: #ffffff;
+  --site-accent-soft: rgba(24, 188, 156, 0.08);
+  --site-accent-ring: rgba(24, 188, 156, 0.25);
+  --site-accent-muted: rgba(24, 188, 156, 0.45);
+
+  --site-surface: #f8f9fa;
+  --site-surface-border: #dee2e6;
+}
+
+.theme-flatly body {
+  background-color: #ffffff;
+  color: #212529;
+}
+
+.theme-flatly h1,
+.theme-flatly h2,
+.theme-flatly h3,
+.theme-flatly h4 {
+  color: #212529;
+}
+
+.theme-flatly h2 {
+  border-bottom-color: #ecf0f1;
+}
+
+.theme-flatly a {
+  color: #18BC9C !important;
+}
+
+.theme-flatly a:hover {
+  color: #128F76 !important;
+}
+
+.theme-flatly .navbar {
+  background-color: #2C3E50 !important;
+}
+
+.theme-flatly .navbar-brand:hover,
+.theme-flatly .navbar-nav .nav-link:hover {
+  color: #18BC9C !important;
+}
+
+.theme-flatly .navbar-nav .dropdown-menu {
+  border-color: #dee2e6;
+}
+
+.theme-flatly .navbar-nav .dropdown-item {
+  color: #2C3E50 !important;
+}
+
+.theme-flatly .navbar-nav .dropdown-item:hover {
+  background-color: #ecf0f1 !important;
+  color: #128F76 !important;
+}
+
+.theme-flatly .sidebar,
+.theme-flatly .sidebar-navigation {
+  background-color: #f8f9fa !important;
+  border-right-color: #dee2e6;
+}
+
+.theme-flatly .sidebar-title {
+  color: #2C3E50 !important;
+  background-color: #ecf0f1 !important;
+  border-bottom-color: #dee2e6;
+}
+
+.theme-flatly .sidebar-item a {
+  color: #2C3E50 !important;
+}
+
+.theme-flatly .sidebar-item a:hover {
+  background-color: #ecf0f1 !important;
+  color: #128F76 !important;
+}
+
+.theme-flatly .sidebar-item.active > a {
+  background-color: #d1f2eb !important;
+  color: #128F76 !important;
+}
+
+.theme-flatly a.sidebar-link.active {
+  background-color: #d1f2eb !important;
+  color: #128F76 !important;
+  font-weight: 600;
+  border-left: 3px solid #18BC9C;
+}
+
+.theme-flatly pre {
+  background-color: #f8f9fa;
+  border-color: #e9ecef;
+}
+
+.theme-flatly :not(pre) > code {
+  background-color: #f7f7f9;
+  color: #d63384;
+  border-color: #e9ecef;
+}
+
+.theme-flatly blockquote {
+  border-left-color: #18BC9C;
+  background-color: #e8f8f5;
+}
+
+.theme-flatly thead {
+  background-color: #2C3E50 !important;
+}
+
+.theme-flatly .callout-note {
+  border-left-color: #18BC9C;
+}
+
+.theme-flatly .callout-tip {
+  border-left-color: #18BC9C;
+  background-color: #e8f8f5;
+}
+
+.theme-flatly .callout-tip .callout-title {
+  background-color: #d1f2eb;
+  color: #0E6655;
+}
+
+.theme-flatly .callout-tip .callout-title-container {
+  color: #0E6655;
+}
+
+.theme-flatly div.callout-tip.callout {
+  border-left-color: #18BC9C !important;
+}
+
+.theme-flatly div.callout-tip .callout-header {
+  background-color: #d1f2eb !important;
+}
+
+.theme-flatly .nav-footer {
+  background-color: #2C3E50 !important;
+  color: #ecf0f1 !important;
+}
+
+.theme-flatly .nav-footer a {
+  color: #18BC9C !important;
+}
+
+.theme-flatly .nav-footer a:hover {
+  color: #ffffff !important;
+}
+
+.theme-flatly .quarto-title-banner {
+  background-color: #2C3E50 !important;
+}
+
+.theme-flatly .page-navigation a {
+  color: #18BC9C !important;
+}
+
+.theme-flatly .page-navigation a:hover {
+  color: #128F76 !important;
+}
+
+.theme-flatly .ai-generated-badge {
+  background-color: #e8f8f5;
+  color: #0E6655;
+  border-left-color: #18BC9C;
+}
+
+.theme-flatly .needs-review-pill {
+  background-color: #d1f2eb;
+  color: #0E6655;
+}
+
+.theme-flatly #TOC a:hover {
+  color: #18BC9C !important;
+}
+
+
+/* ============================================
    MIDNIGHT THEME (dark with teal/cyan accents)
    A deep, immersive dark theme inspired by
    late-night coding sessions and aurora borealis.
@@ -534,6 +793,17 @@ thead {
   --bs-primary-rgb: 94, 234, 212;
   --bs-link-color: #5EEAD4;
   --bs-link-hover-color: #99F6E4;
+
+  --site-accent: #5EEAD4;
+  --site-accent-rgb: 94, 234, 212;
+  --site-accent-hover: #99F6E4;
+  --site-accent-contrast: #0F172A;
+  --site-accent-soft: rgba(94, 234, 212, 0.10);
+  --site-accent-ring: rgba(94, 234, 212, 0.30);
+  --site-accent-muted: rgba(94, 234, 212, 0.40);
+
+  --site-surface: #152238;
+  --site-surface-border: #334155;
 }
 
 .theme-midnight body {
@@ -633,18 +903,6 @@ thead {
 
 .theme-midnight .sidebar-item-container {
   border-bottom-color: #334155;
-}
-
-.theme-midnight .btn-primary {
-  background-color: #5EEAD4 !important;
-  border-color: #5EEAD4 !important;
-  color: #0F172A !important;
-}
-
-.theme-midnight .btn-primary:hover {
-  background-color: #99F6E4 !important;
-  border-color: #99F6E4 !important;
-  color: #0F172A !important;
 }
 
 .theme-midnight #TOC {
@@ -758,11 +1016,66 @@ thead {
   color: #5EEAD4;
 }
 
-/* Theme toggle button adapts to midnight */
-.theme-midnight #theme-toggle {
+/* Theme toggle buttons adapt to midnight */
+.theme-midnight #theme-toggle,
+.theme-midnight #font-toggle {
   background: #1E293B !important;
   border-color: #334155 !important;
   box-shadow: 0 2px 8px rgba(94, 234, 212, 0.2) !important;
+}
+
+/* --- Print: always Garamond on black, whatever is active on screen --- */
+@media print {
+  :root, :root.font-reader, :root.font-garamond {
+    --site-font-body: "EB Garamond", "Garamond", Georgia, serif;
+    --site-font-heading: "EB Garamond", "Garamond", Georgia, serif;
+    --site-font-size: 11.5pt;
+    --site-line-height: 1.45;
+
+    /* Paper is always the light, high-contrast reading surface, even
+       if midnight or warm is the active screen theme. Neutralizing the
+       accent tokens keeps teal and amber off the page. */
+    --site-accent: #000000;
+    --site-accent-hover: #000000;
+    --site-accent-contrast: #ffffff;
+    --site-accent-soft: transparent;
+    --site-accent-ring: #999999;
+    --site-accent-muted: #666666;
+    --site-surface: #ffffff;
+    --site-surface-border: #cccccc;
+    --bs-body-color: #000000;
+    --bs-body-bg: #ffffff;
+  }
+
+  body {
+    color: #000 !important;
+    background: #fff !important;
+  }
+
+  h1, h2, h3, h4 {
+    color: #000 !important;
+    page-break-after: avoid;
+  }
+
+  a {
+    color: #000 !important;
+    text-decoration: underline;
+  }
+
+  #theme-toggle, #font-toggle {
+    display: none !important;
+  }
+
+  /* The navbar prints as an empty band: its background is dropped and its
+     text is white, so it costs an inch of page one and shows nothing. */
+  .navbar, #quarto-search, .quarto-search {
+    display: none !important;
+  }
+
+  /* Keep figures, tables and their captions from splitting across sheets */
+  figure, table, pre, .cell-output-display {
+    page-break-inside: avoid;
+  }
 }
 
 
@@ -895,14 +1208,22 @@ thead {
   color: #000000 !important;
 }
 
-/* Exception: do not apply white bg to tiny UI icons or the theme toggle */
+/* Exception: do not apply white bg to tiny UI icons or the theme toggle.
+   .svg-theme-aware is the opt-out for hand-built widget SVGs that already
+   read the theme tokens, so they stay dark instead of sitting on a plate. */
 .theme-midnight .bi svg,
 .theme-midnight .nav-link svg,
 .theme-midnight .navbar svg,
-.theme-midnight #theme-toggle svg {
+.theme-midnight #theme-toggle svg,
+.theme-midnight .chess-wrap svg,
+.theme-midnight .svg-theme-aware svg {
   background-color: transparent;
   padding: 0;
   border-radius: 0;
+}
+
+.theme-midnight .svg-theme-aware svg text {
+  fill: currentColor !important;
 }
 
 
@@ -1185,9 +1506,581 @@ thead {
 }
 
 
+/* --- Breadcrumb path (title-meta trail) --- */
+/* Full-width row at the top of the .quarto-title-meta block. Stays on a single
+   line; breadcrumb-path.js collapses the middle to "first › … › last" when it
+   would otherwise overflow. */
+.crumb-path-item {
+  width: 100%;
+  margin-top: 0.85em;
+  margin-bottom: 0.5em;
+}
+
+.crumb-path {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: #6c757d;
+}
+
+.crumb-path .crumb,
+.crumb-path .crumb-ellipsis,
+.crumb-path .crumb-sep {
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.crumb-path .crumb-sep {
+  margin: 0 0.5em;
+  opacity: 0.55;
+}
+
+.crumb-path a.crumb {
+  color: inherit;
+  text-decoration: none;
+}
+
+.crumb-path a.crumb:hover {
+  color: var(--bs-link-color, #2c3e50);
+  text-decoration: underline;
+}
+
+.crumb-path .crumb-current {
+  color: #2c3e50;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.theme-warm .crumb-path { color: #8a6d3b; }
+.theme-warm .crumb-path .crumb-current { color: #6B3A0A; }
+.theme-warm .crumb-path a.crumb:hover { color: #6B3A0A; }
+
+.theme-midnight .crumb-path { color: #94A3B8; }
+.theme-midnight .crumb-path .crumb-current { color: #E2E8F0; }
+.theme-midnight .crumb-path a.crumb:hover { color: #5EEAD4; }
+
 /* --- Figure captions --- */
 figcaption {
   text-align: center;
 }
 
+/* --- Inline term highlight (theme-aware) --- */
+/* Wrap a phrase with [text]{.hl} to draw the eye to a key term. */
+.hl {
+  background-color: #e4deff;
+  color: #22176F;
+  padding: 0.02em 0.28em;
+  border-radius: 4px;
+  font-weight: inherit;
+}
 
+.theme-warm .hl {
+  background-color: #FBE4C7;
+  color: #6B3A0A;
+}
+
+.theme-midnight .hl {
+  background-color: #5B21B6;
+  color: #F5F3FF;
+}
+
+/* --- Colored activation tokens in code samples --- */
+/* Site-wide activation color scheme:
+   ReLU = cyan, sigmoid = magenta, softmax = amber, linear = purple.
+   activation-colors.js applies these classes to quoted activation names
+   inside rendered code blocks. Child `code` is included so inline
+   `[`"relu"`]{.tok-relu}` colors too, overriding the inline-code color. */
+.tok-relu,    .tok-relu code    { color: #0e7490 !important; font-weight: 700; }  /* cyan */
+.tok-sigmoid, .tok-sigmoid code { color: #be1d74 !important; font-weight: 700; }  /* magenta */
+.tok-softmax, .tok-softmax code { color: #b45309 !important; font-weight: 700; }  /* amber */
+.tok-linear,  .tok-linear code  { color: #7030A0 !important; font-weight: 700; }  /* purple */
+.tok-comment { color: #6b7280; font-style: italic; }
+
+.theme-warm .tok-relu,    .theme-warm .tok-relu code    { color: #0e7490 !important; }
+.theme-warm .tok-sigmoid, .theme-warm .tok-sigmoid code { color: #a81b63 !important; }
+.theme-warm .tok-softmax, .theme-warm .tok-softmax code { color: #9a4207 !important; }
+.theme-warm .tok-linear,  .theme-warm .tok-linear code  { color: #6a2b96 !important; }
+
+/* Midnight sets a light color on every span in pre code with !important,
+   so these overrides must also be !important to win. */
+.theme-midnight .tok-relu,    .theme-midnight .tok-relu code    { color: #22d3ee !important; }
+.theme-midnight .tok-sigmoid, .theme-midnight .tok-sigmoid code { color: #f0abfc !important; }
+.theme-midnight .tok-softmax, .theme-midnight .tok-softmax code { color: #fbbf24 !important; }
+.theme-midnight .tok-linear,  .theme-midnight .tok-linear code  { color: #c4b5fd !important; }
+.theme-midnight .tok-comment { color: #94a3b8 !important; }
+
+/* --- scikit-learn estimator cards in cell outputs --- */
+/* sklearn's embedded card CSS sizes the widget to its content, which cramps
+   the parameter/attribute tables. Let it use the full text column instead. */
+.cell-output div.sk-container,
+.cell-output div.sk-container .sk-item,
+.cell-output div.sk-container .sk-estimator {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+.cell-output .estimator-table table,
+.cell-output .estimator-table .parameters-table {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+.cell-output .estimator-table td,
+.cell-output .estimator-table th {
+  white-space: normal;
+  word-break: normal;
+}
+/* the collapsible feature-name boxes inside the card are capped very small */
+.cell-output div.sk-container .features .features-container {
+  max-width: 100% !important;
+}
+
+/* --- Home page: Continue Reading --- */
+/* Populated at runtime by visit-history.js inside #continue-reading-section.
+   Scoped under that ID so the rules beat Quarto's default content-list
+   styling (bullets, block li) that would otherwise apply to the JS-injected <ul>. */
+#continue-reading-section ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #e0e0f3;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+#continue-reading-section li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5em;
+  margin: 0;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+#continue-reading-section li::marker {
+  content: "";
+}
+
+#continue-reading-section li:last-child {
+  border-bottom: none;
+}
+
+#continue-reading-section li a {
+  font-weight: 600;
+  text-decoration: none;
+  min-width: 0; /* let the link shrink so long titles ellipsis instead of shoving the time */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#continue-reading-section li a:hover {
+  text-decoration: underline;
+}
+
+.visit-history-time {
+  flex: 0 0 auto;
+  font-size: 0.8rem;
+  color: #6c757d;
+  white-space: nowrap;
+}
+
+.empty-state {
+  color: #6c757d;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.theme-warm #continue-reading-section ul {
+  border-color: #E8D5C0;
+}
+
+.theme-warm #continue-reading-section li {
+  border-bottom-color: #F3E8DA;
+}
+
+.theme-warm .visit-history-time,
+.theme-warm .empty-state {
+  color: #8a6d3b;
+}
+
+.theme-midnight #continue-reading-section ul {
+  border-color: #334155;
+}
+
+.theme-midnight #continue-reading-section li {
+  border-bottom-color: #263449;
+}
+
+.theme-midnight .visit-history-time,
+.theme-midnight .empty-state {
+  color: #94A3B8;
+}
+
+
+
+/* Star ratings in recommender-systems tables */
+.star-filled,
+.star-empty {
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.star-filled {
+  color: #f5b301;
+}
+
+.star-empty {
+  color: #bdbdbd;
+}
+
+.star-num {
+  color: #888;
+  font-size: 0.8em;
+  margin-left: 0.15em;
+}
+
+/* In tables with star ratings, keep movie titles and star+number pairs on one
+   line each, so the first column is not squeezed into wrapping. Wrap any other
+   table in a .nowrap-first-col div for the same first-column treatment. */
+table:has(.star-filled) thead th:first-child,
+table:has(.star-filled) tbody td:first-child,
+.nowrap-first-col thead th:first-child,
+.nowrap-first-col tbody td:first-child,
+td:has(.star-filled),
+td:has(.star-empty) {
+  white-space: nowrap;
+}
+
+.theme-midnight .star-empty {
+  color: #475569;
+}
+
+.theme-midnight .star-num {
+  color: #94A3B8;
+}
+
+/* --- Multi-column navbar dropdowns (nav-columns.js) --- */
+/* On desktop, dropdowns with category headers become a grid, one column per
+   category (small consecutive categories share a column). Below the lg
+   breakpoint the collapsed navbar keeps Bootstrap's normal single list. */
+.navbar .dropdown-menu.dropdown-multicol .dd-divider-hidden {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  .navbar .dropdown-menu.dropdown-multicol.show {
+    display: grid;
+    grid-template-columns: repeat(var(--dd-cols, 2), max-content);
+    column-gap: 1.75rem;
+    padding: 0.5rem 1rem;
+    max-width: calc(100vw - 2rem);
+    overflow-x: auto;
+  }
+
+  .navbar .dropdown-menu.dropdown-multicol.show .dropdown-header {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .navbar .dropdown-menu.dropdown-multicol.show .dropdown-item {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 6px;
+  }
+}
+
+/* ============================================
+   ARCHIVE FLAG
+   Marks notes for a retired certification. Driven entirely by CSS: a folder's
+   _metadata.yml sets "body-classes: archived-section", so retiring a course
+   needs no script and no central list. This is a status signal, not branding,
+   so it keeps its own sepia palette rather than reading the accent tokens.
+   ============================================ */
+:root {
+  --archive-flag-bg: #f0ebe1;
+  --archive-flag-fg: #6f6250;
+  --archive-flag-border: #ded4c2;
+}
+
+.theme-midnight {
+  --archive-flag-bg: rgba(214, 190, 140, 0.14);
+  --archive-flag-fg: #D6BE8C;
+  --archive-flag-border: rgba(214, 190, 140, 0.35);
+}
+
+.archived-section #title-block-header h1.title::after,
+.archived-section #quarto-sidebar .sidebar-item:first-child .menu-text::after {
+  content: "Archived";
+  display: inline-block;
+  background-color: var(--archive-flag-bg);
+  color: var(--archive-flag-fg);
+  border: 1px solid var(--archive-flag-border);
+  font-family: inherit;
+  font-weight: 700;
+  line-height: 1.4;
+  padding: 1px 7px;
+  border-radius: 10px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+/* The title sets a much larger font size, so the badge is sized against the
+   page body rather than inherited from the heading. */
+.archived-section #title-block-header h1.title::after {
+  font-size: 0.72rem;
+  vertical-align: 0.35em;
+}
+
+.archived-section #quarto-sidebar .sidebar-item:first-child .menu-text::after {
+  font-size: 0.58rem;
+  margin-left: 0.4rem;
+}
+
+/* --- Sortable table listings ---------------------------------------------
+   Quarto wraps sortable column headers in <a class="sort">, which picks up the
+   site link color and disappears against the dark table header. Inheriting the
+   header color keeps it readable in every theme. The !important matches the
+   global "a" rule near the top, which would otherwise win. */
+.quarto-listing-table thead th a.sort {
+  color: inherit !important;
+  text-decoration: none;
+}
+
+.quarto-listing-table thead th a.sort:hover,
+.quarto-listing-table thead th a.sort:focus {
+  color: inherit !important;
+  text-decoration: underline;
+}
+
+/* Keep a short first column from wrapping its title onto two lines, while
+   still allowing it to collapse on narrow screens. */
+@media (min-width: 576px) {
+  .quarto-listing-table th:first-child,
+  .quarto-listing-table td:first-child {
+    min-width: 11rem;
+  }
+}
+
+
+/* --- Inline glossary terms ------------------------------------------------ */
+/* A word carrying a dashed underline whose one-line definition appears on
+   hover, on tap, or on keyboard focus. Write it in a .qmd as
+     [convolution]{.term tabindex="0" data-def="Short definition here."}
+   The tabindex is what makes it reachable by keyboard and tappable on touch
+   screens, where :hover never fires on its own. */
+.term {
+  position: relative;
+  border-bottom: 1px dashed var(--site-accent);
+  cursor: help;
+  outline: none;
+}
+
+.term::after {
+  content: attr(data-def);
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: 145%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.35;
+  padding: 6px 10px;
+  border-radius: 5px;
+  white-space: normal;
+  width: max-content;
+  max-width: 300px;
+  text-align: left;
+  z-index: 9999;
+  transition: opacity 0.15s ease, visibility 0s linear 0.15s;
+  pointer-events: none;
+}
+
+.term:hover::after,
+.term:focus::after {
+  visibility: visible;
+  opacity: 1;
+  transition-delay: 0.02s;
+}
+
+.term:focus {
+  background: var(--site-accent-soft);
+}
+
+/* ---------------------------------------------------------------------------
+   Site sign-in (auth.js)
+   Sign-in only syncs a reader's own progress between devices. It gates no
+   content, so the control stays quiet and sits with the other navbar tools.
+   --------------------------------------------------------------------------- */
+
+/* Far right of the navbar tools, after the resume pill and the search icon.
+   The strip must never wrap onto a second row, so the sign-in control keeps
+   its size and the resume pill is the part allowed to shrink. */
+.quarto-navbar-tools {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+#resume-reading-container {
+  min-width: 0;
+  flex: 0 1 auto;
+  overflow: hidden;
+}
+
+#site-auth {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 8px;
+  flex: 0 0 auto;
+  order: 99;            /* last in the strip whatever order things mount in */
+  white-space: nowrap;
+}
+
+.site-auth-btn {
+  font-size: 0.8rem;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--site-accent);
+  background: var(--site-accent);
+  color: var(--site-accent-contrast);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.site-auth-btn:hover {
+  background: var(--site-accent-hover);
+  border-color: var(--site-accent-hover);
+}
+
+.site-auth-btn:disabled {
+  background: var(--site-accent-muted);
+  border-color: var(--site-accent-muted);
+  cursor: default;
+}
+
+.site-auth-btn-quiet {
+  background: transparent;
+  color: inherit;
+  border-color: var(--site-accent-muted);
+  max-width: 12ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.site-auth-btn-quiet:hover {
+  background: var(--site-accent);
+  color: var(--site-accent-contrast);
+}
+
+/* Anchored to the body by auth.js, so it keeps page colours instead of the
+   navbar's and is never clipped by the bar. */
+.site-auth-menu {
+  position: fixed;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 260px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--site-surface-border);
+  background: var(--site-surface);
+  color: var(--bs-body-color);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+}
+
+.site-auth-menu p {
+  margin: 0;
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+.site-auth-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 16px;
+}
+
+.site-auth-card {
+  width: min(420px, 100%);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--site-surface-border);
+  background: var(--site-surface);
+  color: var(--bs-body-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.site-auth-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+}
+
+.site-auth-card p {
+  margin: 0 0 12px;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.site-auth-card input {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: 1px solid var(--site-accent-muted);
+  background: transparent;
+  color: inherit;
+}
+
+.site-auth-card input:focus {
+  outline: none;
+  border-color: var(--site-accent);
+  box-shadow: 0 0 0 3px var(--site-accent-ring);
+}
+
+.site-auth-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.site-auth-err {
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: #CC0000;
+}
+
+/* Sign-in boundary note above the giscus comment box (giscus-note.js). */
+.giscus-note {
+  max-width: 100%;
+  margin: 0 0 10px;
+  padding: 8px 12px;
+  border-left: 3px solid var(--site-accent);
+  border-radius: 4px;
+  background: var(--site-surface);
+  color: var(--bs-body-color);
+  font-size: 0.82rem;
+  opacity: 0.9;
+}
